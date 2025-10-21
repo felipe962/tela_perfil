@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    
+    <!-- Fundo branco do avatar -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M0,20 Q0,0 20,0 L100,0 Q120,0 120,20 L120,100 Q120,120 100,120 L20,120 Q0,120 0,100 Z"/>
+    
+    <!-- Círculo azul -->
+    <path
+        android:fillColor="#2196F3"
+        android:pathData="M60,30 A15,15 0 1,1 59.99,30 Z"/>
+    
+    <!-- Corpo azul -->
+    <path
+        android:fillColor="#2196F3"
+        android:pathData="M40,65 Q40,55 50,55 L70,55 Q80,55 80,65 L80,90 L40,90 Z"/>
+</vector>
