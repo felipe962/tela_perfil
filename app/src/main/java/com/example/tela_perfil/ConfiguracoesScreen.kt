@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -14,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -52,21 +52,40 @@ fun HeaderSection(isDarkTheme: Boolean, onThemeToggle: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Topo com gradiente azul arredondado
+            // Topo com fundo azul e círculos decorativos sobrepostos
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(140.dp)
-                    .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color(0xFF004aad),
-                                Color(0xFF2563eb)
-                            )
-                        )
-                    )
-            )
+                    .background(Color(0xFF1B5283))
+            ) {
+                // Primeiro círculo (mais à esquerda)
+                Box(
+                    modifier = Modifier
+                        .offset(x = (-50).dp, y = (-80).dp)
+                        .size(250.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF0D3A5C).copy(alpha = 0.4f))
+                )
+                
+                // Segundo círculo (centro)
+                Box(
+                    modifier = Modifier
+                        .offset(x = 80.dp, y = (-60).dp)
+                        .size(230.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF0D3A5C).copy(alpha = 0.3f))
+                )
+                
+                // Terceiro círculo (mais à direita)
+                Box(
+                    modifier = Modifier
+                        .offset(x = 200.dp, y = (-70).dp)
+                        .size(240.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF0D3A5C).copy(alpha = 0.35f))
+                )
+            }
 
             Spacer(modifier = Modifier.height(70.dp))
 

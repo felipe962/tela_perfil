@@ -28,6 +28,9 @@ fun PerfilScreen(navController: NavHostController) {
     var email by remember { mutableStateOf("nicolasemail@email.com") }
     var endereco by remember { mutableStateOf("R. Bananeira, 40") }
     var telefone by remember { mutableStateOf("(11) 12345-6789") }
+    
+    var emailError by remember { mutableStateOf(false) }
+    var telefoneError by remember { mutableStateOf(false) }
 
     Scaffold(
         bottomBar = { BottomNavigationBar(navController, currentScreen = "perfil") }
@@ -206,7 +209,12 @@ fun PerfilScreen(navController: NavHostController) {
                             icon = Icons.Filled.Email,
                             label = "E-mail",
                             value = email,
-                            onValueChange = { email = it }
+                            onValueChange = { 
+                                email = it
+                                emailError = !it.contains("@")
+                            },
+                            isError = emailError,
+                            errorMessage = "E-mail não identificado. Deve conter @"
                         )
 
                         Spacer(modifier = Modifier.height(12.dp))
@@ -215,7 +223,9 @@ fun PerfilScreen(navController: NavHostController) {
                             icon = Icons.Filled.Place,
                             label = "Endereço",
                             value = endereco,
-                            onValueChange = { endereco = it }
+                            onValueChange = { endereco = it },
+                            isError = false,
+                            errorMessage = null
                         )
 
                         Spacer(modifier = Modifier.height(12.dp))
@@ -224,7 +234,12 @@ fun PerfilScreen(navController: NavHostController) {
                             icon = Icons.Filled.Phone,
                             label = "Telefone",
                             value = telefone,
-                            onValueChange = { telefone = it }
+                            onValueChange = { 
+                                telefone = it
+                                telefoneError = it.replace(Regex("[^0-9]"), "").length != 10
+                            },
+                            isError = telefoneError,
+                            errorMessage = "Número de telefone inválido. Deve ter exatamente 10 dígitos"
                         )
                     } else {
                         DataItem(
@@ -269,6 +284,8 @@ fun PerfilScreen(navController: NavHostController) {
                             email = "nicolasemail@email.com"
                             endereco = "R. Bananeira, 40"
                             telefone = "(11) 12345-6789"
+                            emailError = false
+                            telefoneError = false
                         },
                         modifier = Modifier
                             .weight(1f)
@@ -288,14 +305,19 @@ fun PerfilScreen(navController: NavHostController) {
                     // Botão Salvar
                     Button(
                         onClick = { 
-                            isEditing = false
-                            // Aqui você pode adicionar lógica para salvar no backend
+                            if (!emailError && !telefoneError) {
+                                isEditing = false
+                                // Aqui você pode adicionar lógica para salvar no backend
+                            }
                         },
                         modifier = Modifier
                             .weight(1f)
                             .height(50.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)),
-                        shape = RoundedCornerShape(12.dp)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (emailError || telefoneError) Color(0xFFCCCCCC) else Color(0xFF4CAF50)
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                        enabled = !emailError && !telefoneError
                     ) {
                         Text(
                             text = "Salvar",
@@ -307,7 +329,11 @@ fun PerfilScreen(navController: NavHostController) {
                 }
             } else {
                 Button(
-                    onClick = { isEditing = true },
+                    onClick = { 
+                        isEditing = true
+                        emailError = false
+                        telefoneError = false
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp)
@@ -367,7 +393,9 @@ fun DataItemEditable(
     icon: ImageVector, 
     label: String, 
     value: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    isError: Boolean = false,
+    errorMessage: String? = null
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -399,12 +427,24 @@ fun DataItemEditable(
                     color = Color(0xFF1E4A7A)
                 ),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF2196F3),
-                    unfocusedBorderColor = Color(0xFFCCCCCC)
+                    focusedBorderColor = if (isError) Color(0xFFDC2626) else Color(0xFF2196F3),
+                    unfocusedBorderColor = if (isError) Color(0xFFDC2626) else Color(0xFFCCCCCC),
+                    errorBorderColor = Color(0xFFDC2626)
                 ),
                 shape = RoundedCornerShape(8.dp),
-                singleLine = true
+                singleLine = true,
+                isError = isError
             )
+            
+            if (isError && errorMessage != null) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = errorMessage,
+                    fontSize = 12.sp,
+                    color = Color(0xFFDC2626),
+                    fontWeight = FontWeight.Medium
+                )
+            }
         }
     }
 }
