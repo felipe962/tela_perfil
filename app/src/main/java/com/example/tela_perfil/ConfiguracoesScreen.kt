@@ -6,11 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -48,97 +45,97 @@ fun ConfiguracoesScreen(navController: NavHostController) {
 // ==================== HEADER SECTION ====================
 @Composable
 fun HeaderSection(isDarkTheme: Boolean, onThemeToggle: () -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier.fillMaxWidth()
     ) {
-        // Topo com gradiente azul
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(140.dp)
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color(0xFF004aad),
-                            Color(0xFF2563eb)
-                        )
-                    )
-                ),
-            contentAlignment = Alignment.BottomCenter
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Card branco com ícone de perfil
-            Card(
-                modifier = Modifier
-                    .size(90.dp)
-                    .offset(y = 45.dp)
-                    .shadow(8.dp, CircleShape),
-                shape = CircleShape,
-                colors = CardDefaults.cardColors(containerColor = Color.White)
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Person,
-                        contentDescription = "Perfil",
-                        modifier = Modifier.size(48.dp),
-                        tint = Color(0xFF2563eb)
-                    )
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(55.dp))
-
-        // Card de Configurações
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .shadow(4.dp, RoundedCornerShape(24.dp)),
-            shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White)
-        ) {
-            Column(
+            // Topo com gradiente azul arredondado
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 24.dp, horizontal = 20.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .height(140.dp)
+                    .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color(0xFF004aad),
+                                Color(0xFF2563eb)
+                            )
+                        )
+                    )
+            )
+
+            Spacer(modifier = Modifier.height(70.dp))
+
+            // Card de Configurações
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .shadow(4.dp, RoundedCornerShape(24.dp)),
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
-                Text(
-                    text = "Configurações",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFF1e3a8a)
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Botão Desconectar
-                OutlinedButton(
-                    onClick = { /* Ação de logout */ },
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth(0.7f)
-                        .height(48.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = Color.White,
-                        contentColor = Color(0xFFdc2626)
-                    ),
-                    border = BorderStroke(2.dp, Color(0xFF2563eb)),
-                    shape = RoundedCornerShape(24.dp)
+                        .fillMaxWidth()
+                        .padding(vertical = 24.dp, horizontal = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Desconectar",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Bold
+                        text = "Configurações",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF1e3a8a)
                     )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Botão Desconectar
+                    OutlinedButton(
+                        onClick = { /* Ação de logout */ },
+                        modifier = Modifier
+                            .fillMaxWidth(0.7f)
+                            .height(48.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            containerColor = Color.White,
+                            contentColor = Color(0xFFdc2626)
+                        ),
+                        border = BorderStroke(2.dp, Color(0xFF2563eb)),
+                        shape = RoundedCornerShape(24.dp)
+                    ) {
+                        Text(
+                            text = "Desconectar",
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        // Card branco com imagem de perfil - sobreposto
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .offset(y = 80.dp)
+                .size(120.dp)
+                .shadow(8.dp, RoundedCornerShape(24.dp))
+                .clip(RoundedCornerShape(24.dp))
+                .background(Color.White),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.profile),
+                contentDescription = "Avatar",
+                modifier = Modifier.size(80.dp)
+            )
+        }
     }
 }
 
@@ -195,100 +192,6 @@ fun SettingsList() {
             subtitle = null,
             onClick = { }
         )
-    }
-}
-
-// ==================== COMPONENTE: SETTINGS ITEM ====================
-@Composable
-fun SettingsItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    title: String,
-    subtitle: String?,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.weight(1f)
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp),
-                tint = Color(0xFF1e3a8a)
-            )
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF1e3a8a)
-            )
-        }
-
-        if (subtitle != null) {
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xFF9ca3af)
-            )
-        }
-    }
-}
-
-// ==================== COMPONENTE: SETTINGS ITEM WITH DRAWABLE ====================
-@Composable
-fun SettingsItemWithDrawable(
-    iconRes: Int,
-    title: String,
-    subtitle: String?,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.weight(1f)
-        ) {
-            Icon(
-                painter = painterResource(id = iconRes),
-                contentDescription = null,
-                modifier = Modifier.size(24.dp),
-                tint = Color(0xFF1e3a8a)
-            )
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF1e3a8a)
-            )
-        }
-
-        if (subtitle != null) {
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xFF9ca3af)
-            )
-        }
     }
 }
 

@@ -1,4 +1,4 @@
-package com.example.tela_perfil
+    package com.example.tela_perfil
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -21,6 +24,11 @@ import androidx.navigation.NavHostController
 // ==================== TELA: MEU PERFIL ====================
 @Composable
 fun PerfilScreen(navController: NavHostController) {
+    var isEditing by remember { mutableStateOf(false) }
+    var email by remember { mutableStateOf("nicolasemail@email.com") }
+    var endereco by remember { mutableStateOf("R. Bananeira, 40") }
+    var telefone by remember { mutableStateOf("(11) 12345-6789") }
+
     Scaffold(
         bottomBar = { BottomNavigationBar(navController, currentScreen = "perfil") }
     ) { paddingValues ->
@@ -52,7 +60,7 @@ fun PerfilScreen(navController: NavHostController) {
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = "Logo PAS",
                     modifier = Modifier
-                        .height(40.dp)
+                        .height(70.dp)
                         .width(100.dp)
                         .padding(start = 20.dp, top = 16.dp)
                         .align(Alignment.TopStart)
@@ -67,7 +75,7 @@ fun PerfilScreen(navController: NavHostController) {
                         .size(48.dp)
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_settings),
+                        imageVector = Icons.Filled.Settings,
                         contentDescription = "Configurações",
                         tint = Color.White,
                         modifier = Modifier.size(32.dp)
@@ -129,7 +137,7 @@ fun PerfilScreen(navController: NavHostController) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     DataItem(
-                        icon = R.drawable.ic_person,
+                        icon = Icons.Filled.Person,
                         label = "Nome",
                         value = "Nicolas Silva de Almeida Santos"
                     )
@@ -137,7 +145,7 @@ fun PerfilScreen(navController: NavHostController) {
                     Spacer(modifier = Modifier.height(12.dp))
 
                     DataItem(
-                        icon = R.drawable.ic_id_card,
+                        icon = Icons.Filled.Info,
                         label = "CPF",
                         value = "123.456.789-00"
                     )
@@ -145,7 +153,7 @@ fun PerfilScreen(navController: NavHostController) {
                     Spacer(modifier = Modifier.height(12.dp))
 
                     DataItem(
-                        icon = R.drawable.ic_location,
+                        icon = Icons.Filled.LocationOn,
                         label = "Naturalidade",
                         value = "Barueri/SP"
                     )
@@ -153,7 +161,7 @@ fun PerfilScreen(navController: NavHostController) {
                     Spacer(modifier = Modifier.height(12.dp))
 
                     DataItem(
-                        icon = R.drawable.ic_calendar,
+                        icon = Icons.Filled.Star,
                         label = "Nascimento",
                         value = "10/10/2007"
                     )
@@ -161,7 +169,7 @@ fun PerfilScreen(navController: NavHostController) {
                     Spacer(modifier = Modifier.height(12.dp))
 
                     DataItem(
-                        icon = R.drawable.ic_mother,
+                        icon = Icons.Filled.AccountCircle,
                         label = "Nome da Mãe",
                         value = "Aline Silva de Almeida Santos"
                     )
@@ -193,48 +201,127 @@ fun PerfilScreen(navController: NavHostController) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    DataItem(
-                        icon = R.drawable.ic_email,
-                        label = "E-mail",
-                        value = "nicolasemail@email.com"
-                    )
+                    if (isEditing) {
+                        DataItemEditable(
+                            icon = Icons.Filled.Email,
+                            label = "E-mail",
+                            value = email,
+                            onValueChange = { email = it }
+                        )
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
 
-                    DataItem(
-                        icon = R.drawable.ic_pin,
-                        label = "Endereço",
-                        value = "R. Bananeira, 40"
-                    )
+                        DataItemEditable(
+                            icon = Icons.Filled.Place,
+                            label = "Endereço",
+                            value = endereco,
+                            onValueChange = { endereco = it }
+                        )
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
 
-                    DataItem(
-                        icon = R.drawable.ic_phone,
-                        label = "Telefone",
-                        value = "(11) 12345-6789"
-                    )
+                        DataItemEditable(
+                            icon = Icons.Filled.Phone,
+                            label = "Telefone",
+                            value = telefone,
+                            onValueChange = { telefone = it }
+                        )
+                    } else {
+                        DataItem(
+                            icon = Icons.Filled.Email,
+                            label = "E-mail",
+                            value = email
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        DataItem(
+                            icon = Icons.Filled.Place,
+                            label = "Endereço",
+                            value = endereco
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        DataItem(
+                            icon = Icons.Filled.Phone,
+                            label = "Telefone",
+                            value = telefone
+                        )
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // ====== BOTÃO EDITAR ======
-            Button(
-                onClick = { },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .padding(horizontal = 16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2196F3)),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Text(
-                    text = "Editar",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
+            // ====== BOTÕES EDITAR / SALVAR / CANCELAR ======
+            if (isEditing) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    // Botão Cancelar
+                    OutlinedButton(
+                        onClick = { 
+                            isEditing = false
+                            email = "nicolasemail@email.com"
+                            endereco = "R. Bananeira, 40"
+                            telefone = "(11) 12345-6789"
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(50.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color(0xFF2196F3)
+                        ),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text(
+                            text = "Cancelar",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    // Botão Salvar
+                    Button(
+                        onClick = { 
+                            isEditing = false
+                            // Aqui você pode adicionar lógica para salvar no backend
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(50.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text(
+                            text = "Salvar",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
+                }
+            } else {
+                Button(
+                    onClick = { isEditing = true },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .padding(horizontal = 16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2196F3)),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(
+                        text = "Editar",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(30.dp))
@@ -244,13 +331,13 @@ fun PerfilScreen(navController: NavHostController) {
 
 // ==================== COMPONENTE: DATA ITEM ====================
 @Composable
-fun DataItem(icon: Int, label: String, value: String) {
+fun DataItem(icon: ImageVector, label: String, value: String) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top
     ) {
         Icon(
-            painter = painterResource(id = icon),
+            imageVector = icon,
             contentDescription = null,
             tint = Color(0xFF1E4A7A),
             modifier = Modifier.size(24.dp)
@@ -269,6 +356,54 @@ fun DataItem(icon: Int, label: String, value: String) {
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
                 color = Color(0xFF1E4A7A)
+            )
+        }
+    }
+}
+
+// ==================== COMPONENTE: DATA ITEM EDITÁVEL ====================
+@Composable
+fun DataItemEditable(
+    icon: ImageVector, 
+    label: String, 
+    value: String,
+    onValueChange: (String) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Top
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = Color(0xFF1E4A7A),
+            modifier = Modifier.size(24.dp)
+        )
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = label,
+                fontSize = 12.sp,
+                color = Color(0xFF888888)
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            OutlinedTextField(
+                value = value,
+                onValueChange = onValueChange,
+                modifier = Modifier.fillMaxWidth(),
+                textStyle = androidx.compose.ui.text.TextStyle(
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color(0xFF1E4A7A)
+                ),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFF2196F3),
+                    unfocusedBorderColor = Color(0xFFCCCCCC)
+                ),
+                shape = RoundedCornerShape(8.dp),
+                singleLine = true
             )
         }
     }
