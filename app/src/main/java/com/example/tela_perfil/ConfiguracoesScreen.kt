@@ -150,51 +150,47 @@ fun SettingsList() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 24.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         // Tema
-        SettingsItemWithDrawable(
-            iconRes = R.drawable.ic_moon,
-            title = "Tema",
+        SettingsItemSimple(
+            title = "Tema 🌙",
             subtitle = null,
             onClick = { isDarkTheme = !isDarkTheme }
         )
 
-        Divider(modifier = Modifier.padding(vertical = 12.dp), color = Color(0xFFe5e7eb))
+        Spacer(modifier = Modifier.height(24.dp))
 
         // Idioma
-        SettingsItem(
-            icon = Icons.Filled.Settings,
+        SettingsItemSimple(
             title = "Idioma",
             subtitle = "Português",
             onClick = { }
         )
 
-        Divider(modifier = Modifier.padding(vertical = 12.dp), color = Color(0xFFe5e7eb))
+        Spacer(modifier = Modifier.height(24.dp))
 
         // Contato
-        SettingsItemWithDrawable(
-            iconRes = R.drawable.ic_email,
+        SettingsItemSimple(
             title = "Contato",
             subtitle = "pas.suporte@gmail.com",
             onClick = { }
         )
 
-        Divider(modifier = Modifier.padding(vertical = 12.dp), color = Color(0xFFe5e7eb))
+        Spacer(modifier = Modifier.height(24.dp))
 
         // Termos de uso
-        SettingsItem(
-            icon = Icons.Filled.Check,
+        SettingsItemSimple(
             title = "Termos de uso",
             subtitle = null,
             onClick = { }
         )
 
-        Divider(modifier = Modifier.padding(vertical = 12.dp), color = Color(0xFFe5e7eb))
+        Spacer(modifier = Modifier.height(24.dp))
 
         // Sobre
-        SettingsItem(
-            icon = Icons.Filled.Info,
+        SettingsItemSimple(
             title = "Sobre",
             subtitle = null,
             onClick = { }
@@ -290,6 +286,38 @@ fun SettingsItemWithDrawable(
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodyMedium,
+                color = Color(0xFF9ca3af)
+            )
+        }
+    }
+}
+
+// ==================== COMPONENTE: SETTINGS ITEM SIMPLE (SEM ÍCONES) ====================
+@Composable
+fun SettingsItemSimple(
+    title: String,
+    subtitle: String?,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp),
+            fontWeight = FontWeight.SemiBold,
+            color = Color(0xFF1e3a8a)
+        )
+
+        if (subtitle != null) {
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
                 color = Color(0xFF9ca3af)
             )
         }
