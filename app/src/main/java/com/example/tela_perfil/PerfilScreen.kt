@@ -17,9 +17,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.tela_perfil.ui.theme.Tela_perfilTheme
 
 // ==================== TELA: MEU PERFIL ====================
 @Composable
@@ -49,21 +52,12 @@ fun PerfilScreen(navController: NavHostController) {
                     .height(200.dp)
                     .background(Color(0xFF1B5283))
             ) {
-                // Círculo de fundo decorativo
-                Box(
-                    modifier = Modifier
-                        .offset(x = 150.dp, y = (-50).dp)
-                        .size(250.dp)
-                        .clip(androidx.compose.foundation.shape.CircleShape)
-                        .background(Color(0xFF0D3A5C).copy(alpha = 0.3f))
-                )
-
                 // Logo "PAS" no canto superior esquerdo
                 Image(
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = "Logo PAS",
                     modifier = Modifier
-                        .height(70.dp)
+                        .height(90.dp)
                         .width(100.dp)
                         .padding(start = 20.dp, top = 16.dp)
                         .align(Alignment.TopStart)
@@ -88,7 +82,7 @@ fun PerfilScreen(navController: NavHostController) {
                 // Texto "Meu Perfil"
                 Text(
                     text = "Meu Perfil",
-                    fontSize = 20.sp,
+                    fontSize = 30.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     modifier = Modifier
@@ -277,7 +271,7 @@ fun PerfilScreen(navController: NavHostController) {
                         .padding(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    // Botão Cancelar
+
                     OutlinedButton(
                         onClick = { 
                             isEditing = false
@@ -302,12 +296,10 @@ fun PerfilScreen(navController: NavHostController) {
                         )
                     }
 
-                    // Botão Salvar
                     Button(
                         onClick = { 
                             if (!emailError && !telefoneError) {
                                 isEditing = false
-                                // Aqui você pode adicionar lógica para salvar no backend
                             }
                         },
                         modifier = Modifier
@@ -448,3 +440,4 @@ fun DataItemEditable(
         }
     }
 }
+

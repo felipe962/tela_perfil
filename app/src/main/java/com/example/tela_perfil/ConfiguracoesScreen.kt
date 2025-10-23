@@ -18,14 +18,18 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.tela_perfil.ui.theme.Tela_perfilTheme
 
 // ==================== TELA: CONFIGURAÇÕES ====================
 @Composable
 fun ConfiguracoesScreen(navController: NavHostController) {
     var isDarkTheme by remember { mutableStateOf(false) }
+    var showLogoutDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         bottomBar = { BottomNavigationBar(navController, currentScreen = "perfil") }
@@ -36,15 +40,64 @@ fun ConfiguracoesScreen(navController: NavHostController) {
                 .background(Color(0xFFF9FAFB))
                 .padding(paddingValues)
         ) {
-            HeaderSection(isDarkTheme = isDarkTheme, onThemeToggle = { isDarkTheme = !isDarkTheme })
+            HeaderSection(
+                isDarkTheme = isDarkTheme, 
+                onThemeToggle = { isDarkTheme = !isDarkTheme },
+                onLogoutClick = { showLogoutDialog = true }
+            )
             SettingsList()
         }
+    }
+    
+    // Diálogo de confirmação de desconexão
+    if (showLogoutDialog) {
+        AlertDialog(
+            onDismissRequest = { showLogoutDialog = false },
+            title = {
+                Text(
+                    text = "Tem certeza?",
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF1E4A7A)
+                )
+            },
+            text = {
+                Text(
+                    text = "Deseja realmente desconectar?",
+                    color = Color(0xFF666666)
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showLogoutDialog = false
+                        // Aqui você pode adicionar a lógica de logout
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFDC2626)
+                    )
+                ) {
+                    Text("Sim")
+                }
+            },
+            dismissButton = {
+                OutlinedButton(
+                    onClick = { showLogoutDialog = false },
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = Color(0xFF2196F3)
+                    )
+                ) {
+                    Text("Não")
+                }
+            },
+            containerColor = Color.White,
+            shape = RoundedCornerShape(16.dp)
+        )
     }
 }
 
 // ==================== HEADER SECTION ====================
 @Composable
-fun HeaderSection(isDarkTheme: Boolean, onThemeToggle: () -> Unit) {
+fun HeaderSection(isDarkTheme: Boolean, onThemeToggle: () -> Unit, onLogoutClick: () -> Unit) {
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -58,34 +111,7 @@ fun HeaderSection(isDarkTheme: Boolean, onThemeToggle: () -> Unit) {
                     .fillMaxWidth()
                     .height(140.dp)
                     .background(Color(0xFF1B5283))
-            ) {
-                // Primeiro círculo (mais à esquerda)
-                Box(
-                    modifier = Modifier
-                        .offset(x = (-50).dp, y = (-80).dp)
-                        .size(250.dp)
-                        .clip(CircleShape)
-                        .background(Color(0xFF0D3A5C).copy(alpha = 0.4f))
-                )
-                
-                // Segundo círculo (centro)
-                Box(
-                    modifier = Modifier
-                        .offset(x = 80.dp, y = (-60).dp)
-                        .size(230.dp)
-                        .clip(CircleShape)
-                        .background(Color(0xFF0D3A5C).copy(alpha = 0.3f))
-                )
-                
-                // Terceiro círculo (mais à direita)
-                Box(
-                    modifier = Modifier
-                        .offset(x = 200.dp, y = (-70).dp)
-                        .size(240.dp)
-                        .clip(CircleShape)
-                        .background(Color(0xFF0D3A5C).copy(alpha = 0.35f))
-                )
-            }
+            ) {}
 
             Spacer(modifier = Modifier.height(70.dp))
 
@@ -115,7 +141,7 @@ fun HeaderSection(isDarkTheme: Boolean, onThemeToggle: () -> Unit) {
 
                     // Botão Desconectar
                     OutlinedButton(
-                        onClick = { /* Ação de logout */ },
+                        onClick = onLogoutClick,
                         modifier = Modifier
                             .fillMaxWidth(0.7f)
                             .height(48.dp),
